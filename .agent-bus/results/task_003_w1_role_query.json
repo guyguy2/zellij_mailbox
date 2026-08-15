@@ -1,0 +1,12 @@
+{
+  "task_id": "task_003_w1_role_query",
+  "status": "completed",
+  "worker_id": "Worker 1 (Backend / Logic)",
+  "role": "Backend / Logic",
+  "responsibilities": [
+    "Implement core application logic and backend architecture",
+    "Develop algorithms, data processing pipelines, and business logic",
+    "Manage storage, state, and system integrations",
+    "Execute backend task instructions and report completion to the Lead Orchestrator"
+  ]
+}

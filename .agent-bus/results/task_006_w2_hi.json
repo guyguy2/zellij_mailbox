@@ -1,0 +1,6 @@
+{
+  "task_id": "task_006_w2_hi",
+  "worker": "Worker 2 (Testing / QA / Review)",
+  "status": "completed",
+  "response": "Hello! Worker 2 (Testing / QA / Review) is online, healthy, and standing by for testing and review tasks."
+}

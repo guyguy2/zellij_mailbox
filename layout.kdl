@@ -1,0 +1,21 @@
+layout {
+    pane size=1 borderless=true {
+        plugin location="tab-bar"
+    }
+    pane split_direction="vertical" {
+        pane name="Orchestrator" command="agy" {
+            args "-i" "Determine your identity based on GEMINI.md and greet the user with your role and purpose."
+        }
+        pane split_direction="horizontal" {
+            pane name="Worker 2 (qa)" command="agy" {
+                args "-i" "Determine your identity based on GEMINI.md and greet the user with your role and purpose."
+            }
+            pane name="Worker 1 (dev)" command="agy" {
+                args "-i" "Determine your identity based on GEMINI.md and greet the user with your role and purpose."
+            }
+        }
+    }
+    pane size=1 borderless=true {
+        plugin location="status-bar"
+    }
+}
