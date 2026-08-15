@@ -46,6 +46,7 @@ Standard software development tasks follow a multi-stage pipeline:
 2. **Verification (`qa`):** Test suite execution and verification using `.agent-bus/roles/qa.md`.
 
 *On-Demand Roles:*
+- **DevOps & GKE Specialist (`devops`):** Kubernetes manifests, Helm/Kustomize, CI/CD, Workload Identity, and GKE infrastructure using `.agent-bus/roles/devops.md`.
 - **Code Review (`reviewer`):** Deep diff analysis, security checks, and PR reviews using `.agent-bus/roles/reviewer.md`.
 - **Documentation (`docs`):** README, docstrings, and API docs using `.agent-bus/roles/docs.md`.
 
@@ -54,7 +55,7 @@ Unless specified otherwise by the user or dynamically adjusted by the Orchestrat
 - **Worker 1 (Pane `2`):** Primary `dev` (Implementation & Bugfixes)
 - **Worker 2 (Pane `1`):** Primary `qa` (Testing & Verification)
 
-*(Note: Roles remain dynamic. The Orchestrator can reassign workers on-the-fly based on project needs, such as parallel `dev` tasks or dedicated `reviewer` / `docs` passes).*
+*(Note: Roles remain dynamic. The Orchestrator can reassign workers on-the-fly based on project needs, such as parallel `dev` tasks, infrastructure/deployment with `devops`, or dedicated `reviewer` / `docs` passes).*
 
 ---
 
@@ -64,7 +65,7 @@ Unless specified otherwise by the user or dynamically adjusted by the Orchestrat
 *(Note: Inspect live panes at any time with `zellij action list-panes`)*
 
 - **Communication Directory (`.agent-bus/`):**
-  - `.agent-bus/roles/` -> Reusable role definitions (`dev.md`, `qa.md`, `reviewer.md`, `docs.md`, `_BASE.md`)
+  - `.agent-bus/roles/` -> Reusable role definitions (`dev.md`, `qa.md`, `devops.md`, `reviewer.md`, `docs.md`, `_BASE.md`)
   - `.agent-bus/tasks/` -> Task briefs written by the Orchestrator
   - `.agent-bus/results/` -> Result receipts written by Workers
 
@@ -92,7 +93,7 @@ For every subtask in your plan:
 
 ### 1. Write the Task Brief
 Create a task specification at `.agent-bus/tasks/<task_id>.md`. Always specify:
-- **Assigned Role:** Point to `.agent-bus/roles/<role>.md` (e.g. `dev`, `qa`, `reviewer`, `docs`).
+- **Assigned Role:** Point to `.agent-bus/roles/<role>.md` (e.g. `dev`, `qa`, `devops`, `reviewer`, `docs`).
 - **Objective & Context:** Clear explanation of what needs to be accomplished.
 - **Allowed Scope & File Boundaries:** Exact files to create/modify (and files forbidden to touch).
 - **Acceptance Criteria:** Concrete definition of done.

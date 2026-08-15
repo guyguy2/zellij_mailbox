@@ -42,7 +42,7 @@ A lightweight, robust multi-agent orchestration architecture for terminal multip
 
 - **🧭 Deterministic Identity Protocol:** Overcomes terminal enumeration pitfalls by binding agent identities directly to `$ZELLIJ_PANE_ID` environment variables.
 - **📁 File-Based Agent Bus (`.agent-bus/`):** Clean separation of concerns with isolated directories for tasks, receipts, and modular role definitions.
-- **🎭 Modular Role Catalog:** Hot-swappable agent personas with strict guardrails and dedicated payload schemas (`dev`, `qa`, `reviewer`, `docs`).
+- **🎭 Modular Role Catalog:** Hot-swappable agent personas with strict guardrails and dedicated payload schemas (`dev`, `qa`, `devops`, `reviewer`, `docs`).
 - **⚡ Native Zellij Integration:** Orchestrator controls workers via `zellij action write-chars` and `send-keys`, dynamically renaming panes to reflect live roles.
 - **🧾 Structured Receipt Contracts:** Strict JSON completion receipts ensure deterministic validation, transparent error tracking, and seamless pipeline transitions.
 
@@ -60,6 +60,7 @@ A lightweight, robust multi-agent orchestration architecture for terminal multip
     │   ├── _BASE.md       # Universal base protocol & receipt format
     │   ├── dev.md         # Software developer & implementation specialist
     │   ├── qa.md          # QA, testing, & verification specialist
+    │   ├── devops.md      # DevOps & GKE Kubernetes specialist
     │   ├── reviewer.md    # Code review, security & architecture auditor
     │   └── docs.md        # Technical writing & documentation specialist
     ├── tasks/             # Task briefs dispatched by the Orchestrator
@@ -126,6 +127,7 @@ sequenceDiagram
 | **Universal Base** | [`_BASE.md`](.agent-bus/roles/_BASE.md) | Universal contract, error reporting, isolation guardrails | Standard receipt envelope |
 | **Developer** | [`dev.md`](.agent-bus/roles/dev.md) | Feature implementation, refactoring, bugfixes, builds | Code changes, notes for QA |
 | **QA Specialist** | [`qa.md`](.agent-bus/roles/qa.md) | Test suite execution, boundary tests, regression checks | Test run metrics, issue list |
+| **DevOps / GKE** | [`devops.md`](.agent-bus/roles/devops.md) | Kubernetes manifests, GKE/VPC config, Helm/Kustomize, CI/CD, Workload Identity | Manifests created, validation run, security checks |
 | **Code Reviewer** | [`reviewer.md`](.agent-bus/roles/reviewer.md) | Diff inspection, OWASP security audit, complexity analysis | Review findings, score, approval |
 | **Documentation** | [`docs.md`](.agent-bus/roles/docs.md) | API references, docstrings, user guides, README updates | Docs created, updated endpoints |
 
