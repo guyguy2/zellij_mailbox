@@ -65,8 +65,8 @@ zellij action send-keys --pane-id 2 "Enter"
 ---
 
 ## 🧾 Step 4: Monitor Completion & Parse Receipts
-
-1. Poll `.agent-bus/results/<task_id>.json` to check worker status.
+ 
+1. **Event-Driven Wakeup:** Stop and yield your turn. Await the auto-wake notification triggered by the `validate_receipt` lifecycle hook when the worker finishes and writes a valid receipt.
 2. The completion receipt format:
 ```json
 {

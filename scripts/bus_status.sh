@@ -1,7 +1,11 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-cat >/dev/null # Consume stdin
+PAYLOAD=$(cat)
+WORKSPACE_ROOT=$(echo "$PAYLOAD" | jq -r '.workspacePaths[0] // "."' 2>/dev/null || echo ".")
+if [ -d "$WORKSPACE_ROOT" ]; then
+    cd "$WORKSPACE_ROOT"
+fi
 
 PANE_ID="${ZELLIJ_PANE_ID:-standalone}"
 

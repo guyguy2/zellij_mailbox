@@ -2,6 +2,11 @@
 set -euo pipefail
 
 PAYLOAD=$(cat)
+WORKSPACE_ROOT=$(echo "$PAYLOAD" | jq -r '.workspacePaths[0] // "."' 2>/dev/null || echo ".")
+if [ -d "$WORKSPACE_ROOT" ]; then
+    cd "$WORKSPACE_ROOT"
+fi
+
 TOOL_NAME=$(echo "$PAYLOAD" | jq -r '.toolCall.name // empty')
 PANE_ID="${ZELLIJ_PANE_ID:-standalone}"
 
