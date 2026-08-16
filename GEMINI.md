@@ -159,12 +159,12 @@ Package the orchestration system as an Antigravity **Skill + CLI Command** (e.g.
 ---
 
 ### 3. Coexistence with Existing Project `GEMINI.md` Rules
-To prevent collisions in existing projects that already have their own [`GEMINI.md`](file:///Users/guy/dev/ai/ai-tools/zellij_mailbox/GEMINI.md) (e.g., coding standards, architecture rules, linters):
+To prevent collisions in existing projects that already have their own [`GEMINI.md`](GEMINI.md) (e.g., coding standards, architecture rules, linters):
 
 - **Decouple from Root `GEMINI.md`:**
-  - Move the multi-agent role protocol from `GEMINI.md` into [`.agent-bus/ARCHITECTURE.md`](file:///Users/guy/dev/ai/ai-tools/zellij_mailbox/.agent-bus) or the global skill.
-  - Update [`layout.kdl`](file:///Users/guy/dev/ai/ai-tools/zellij_mailbox/layout.kdl) startup args to reference `.agent-bus/ARCHITECTURE.md` (or the skill) instead of `GEMINI.md`.
+  - Move the multi-agent role protocol from `GEMINI.md` into `.agent-bus/ARCHITECTURE.md` or the global skill.
+  - Update [`layout.kdl`](layout.kdl) startup args to reference `.agent-bus/ARCHITECTURE.md` (or the skill) instead of `GEMINI.md`.
 - **Seamless Dual Activation:**
-  - In existing projects, the agent automatically loads the repository's native [`GEMINI.md`](file:///Users/guy/dev/ai/ai-tools/zellij_mailbox/GEMINI.md) for project coding guidelines, while the Zellij worker panes adopt their multi-agent roles from `.agent-bus/` or the skill without overwriting or polluting project configuration.
+  - In existing projects, the agent automatically loads the repository's native `GEMINI.md` for project coding guidelines, while the Zellij worker panes adopt their multi-agent roles from `.agent-bus/` or the skill without overwriting or polluting project configuration.
 
 
