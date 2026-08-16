@@ -16,3 +16,8 @@ Thumbs.db
 
 # Logs & Temporary files
 *.log
+
+# Agent Bus Runtime State
+.agent-bus/tasks/
+.agent-bus/results/
+.agent-bus/*.log

@@ -1,0 +1,18 @@
+{
+  "name": "zellij-orchestrator",
+  "version": "1.0.0",
+  "description": "Multi-agent terminal orchestrator for Zellij using Antigravity CLI (agy) with asynchronous file-backed messaging bus and deterministic receipt contracts.",
+  "author": {
+    "name": "Antigravity Engineering"
+  },
+  "license": "MIT",
+  "keywords": [
+    "multi-agent",
+    "orchestration",
+    "zellij",
+    "terminal",
+    "antigravity",
+    "gemini-cli",
+    "agent-bus"
+  ]
+}

@@ -1,0 +1,42 @@
+{
+  "zellij-bus-gates": {
+    "PreToolUse": [
+      {
+        "matcher": "run_command|write_to_file|replace_file_content",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "./scripts/guardrails.sh",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "write_to_file|replace_file_content",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "./scripts/validate_receipt.sh",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "PreInvocation": [
+      {
+        "type": "command",
+        "command": "./scripts/bus_status.sh",
+        "timeout": 3
+      }
+    ],
+    "Stop": [
+      {
+        "type": "command",
+        "command": "./scripts/check_pending_receipt.sh",
+        "timeout": 5
+      }
+    ]
+  }
+}

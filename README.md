@@ -1,24 +1,23 @@
-# 🤖 Zellij Mailbox: Multi-Agent Terminal Orchestrator
+# 🤖 Zellij Mailbox: Multi-Agent Terminal Orchestrator Plugin
 
-A lightweight, robust multi-agent orchestration architecture for terminal multiplexers ([Zellij](https://zellij.dev/)) powered by Google DeepMind's [Antigravity CLI](https://antigravity.google) (`agy`).
+A robust, portable multi-agent orchestration plugin for terminal multiplexers ([Zellij](https://zellij.dev/)) powered by Google DeepMind's [Antigravity CLI](https://antigravity.google) (`agy`) and Gemini CLI.
 
-`zellij_mailbox` coordinates specialized autonomous AI agents across dedicated terminal panes using an asynchronous, file-backed messaging bus (`.agent-bus/`) and deterministic JSON receipts.
+`zellij_mailbox` coordinates specialized autonomous AI agents across dedicated terminal panes using an asynchronous, file-backed messaging bus (`.agent-bus/`), deterministic JSON receipts, progressive skill runbooks, and automated lifecycle hooks.
 
 ---
 
 ## 🏛️ Architecture Overview
 
 ```
-                          ┌────────────────────────────────┐
-                          │   Lead Orchestrator (Pane 0)   │
-                          │   - Goal Decomposition         │
-                          │   - Task Dispatch & Oversight  │
-                          └──────────────┬─────────────────┘
-                                         │
-                 ┌───────────────────────┴───────────────────────┐
-                 │ Writes Task Briefs (.agent-bus/tasks/<id>.md) │
-                 │ Injects CLI commands into target worker panes │
-                 ▼                                               ▼
+                                 LEAD ORCHESTRATOR (Pane 0)
+                                 - Goal Decomposition
+                                 - Task Dispatch & Oversight
+                                 - Governed by SKILL.md
+                                             │
+                     ┌───────────────────────┴───────────────────────┐
+                     │ Writes Task Briefs (.agent-bus/tasks/<id>.md) │
+                     │ Injects commands into target worker panes     │
+                     ▼                                               ▼
 ┌────────────────────────────────┐              ┌────────────────────────────────┐
 │      Worker 1 (Pane 2)         │              │      Worker 2 (Pane 1)         │
 │   Primary Role: dev            │              │   Primary Role: qa             │
@@ -32,7 +31,8 @@ A lightweight, robust multi-agent orchestration architecture for terminal multip
                          ┌───────────────────────────────┐
                          │   Receipt Bus (.agent-bus/)   │
                          │   - .agent-bus/results/<id>.json│
-                         │   - Deterministic JSON output │
+                         │   - Validated by Lifecycle    │
+                         │     Hooks (hooks.json)        │
                          └───────────────────────────────┘
 ```
 
@@ -40,57 +40,133 @@ A lightweight, robust multi-agent orchestration architecture for terminal multip
 
 ## ✨ Key Features
 
-- **🧭 Deterministic Identity Protocol:** Overcomes terminal enumeration pitfalls by binding agent identities directly to `$ZELLIJ_PANE_ID` environment variables.
-- **📁 File-Based Agent Bus (`.agent-bus/`):** Clean separation of concerns with isolated directories for tasks, receipts, and modular role definitions.
-- **🎭 Modular Role Catalog:** Hot-swappable agent personas with strict guardrails and dedicated payload schemas (`dev`, `qa`, `devops`, `reviewer`, `docs`).
-- **⚡ Native Zellij Integration:** Orchestrator controls workers via `zellij action write-chars` and `send-keys`, dynamically renaming panes to reflect live roles.
-- **🧾 Structured Receipt Contracts:** Strict JSON completion receipts ensure deterministic validation, transparent error tracking, and seamless pipeline transitions.
+- **📦 Native Antigravity / Gemini CLI Plugin:** Zero collision with target project `GEMINI.md` rules; works seamlessly in any repository.
+- **🧭 Progressive Disclosure Skill:** Ingests orchestration runbooks only when needed, preserving precious context tokens.
+- **🪝 Automated Lifecycle Hooks (`hooks.json`):**
+  - **`Stop` Hook:** Prevents workers from exiting without writing required JSON receipts.
+  - **`PostToolUse` Hook:** Validates JSON receipt schema adherence on write.
+  - **`PreToolUse` Hook:** Enforces file boundary scope containment and blocks destructive shell commands.
+  - **`PreInvocation` Hook:** Injects real-time bus telemetry ephemerally.
+- **🧭 Deterministic Identity Protocol:** Overcomes terminal enumeration pitfalls by binding agent identities directly to `$ZELLIJ_PANE_ID`.
+- **🎭 Modular Role Catalog:** Hot-swappable agent personas (`dev`, `qa`, `devops`, `reviewer`, `docs`).
 
 ---
 
-## 📂 Repository Layout
+## 📂 Plugin Structure
 
 ```text
 .
-├── GEMINI.md              # Multi-agent role rules & identity protocols
-├── layout.kdl             # Zellij multi-pane terminal layout configuration
-├── README.md              # Project overview and documentation
-└── .agent-bus/
-    ├── roles/             # Modular role specifications & payload schemas
-    │   ├── _BASE.md       # Universal base protocol & receipt format
-    │   ├── dev.md         # Software developer & implementation specialist
-    │   ├── qa.md          # QA, testing, & verification specialist
-    │   ├── devops.md      # DevOps & GKE Kubernetes specialist
-    │   ├── reviewer.md    # Code review, security & architecture auditor
-    │   └── docs.md        # Technical writing & documentation specialist
-    ├── tasks/             # Task briefs dispatched by the Orchestrator
-    └── results/           # JSON completion receipts written by Workers
+├── plugin.json                       # Plugin manifest
+├── hooks.json                        # Lifecycle automation hooks
+├── rules/
+│   └── AGENTS.md                     # Scoped dynamic identity binding rules
+├── skills/
+│   └── zellij-orchestrator/
+│       ├── SKILL.md                  # Orchestration runbook & procedures
+│       ├── resources/
+│           ├── layout.kdl            # Zellij multi-pane template
+│           └── roles/                # Modular role specifications
+│               ├── _BASE.md          # Universal base receipt protocol
+│               ├── dev.md            # Implementation specialist
+│               ├── qa.md             # Testing & verification
+│               ├── devops.md         # Kubernetes / GKE specialist
+│               ├── reviewer.md       # Code review & security audit
+│               └── docs.md           # Documentation specialist
+│       └── scripts/
+│           ├── init_bus.sh           # Scaffolds .agent-bus/ in workspace
+│           └── launch.sh             # Zellij session launcher
+├── scripts/
+│   ├── install.sh                    # Global installer script
+│   ├── guardrails.sh                 # PreToolUse safety gate
+│   ├── validate_receipt.sh           # PostToolUse receipt validator
+│   ├── bus_status.sh                 # PreInvocation status injector
+│   └── check_pending_receipt.sh      # Stop hook receipt gate
+└── layout.kdl                        # Local Zellij layout configuration
 ```
 
 ---
 
-## 🚀 Quickstart
+## 🚀 Quickstart & Installation
 
-### Prerequisites
+Plugins in Gemini CLI and Antigravity (`agy`) are **100% directory-based**—no packaging, bundling, or compilation steps are required.
 
-1. **Zellij**: Install Zellij multiplexer ([Installation Guide](https://zellij.dev/documentation/installation.html)):
-   ```bash
-   brew install zellij
-   ```
-2. **Antigravity CLI (`agy`)**: Ensure the `agy` executable is in your `$PATH`.
+### 1. Prerequisites
+Ensure the target machine has `zellij` and `jq`:
 
-### Launching the Orchestration Session
+```bash
+# macOS
+brew install zellij jq
 
-Start a session using the provided layout:
+# Linux (Debian / Ubuntu)
+sudo apt update && sudo apt install -y jq
+# Install Zellij: https://zellij.dev/documentation/installation.html
+```
 
+---
+
+### 2. Installing on Another Machine
+
+#### Method A: Clone & Run Installer (Recommended)
+This method clones the repository and symlinks it into your global Gemini config. Any future `git pull` automatically updates your global plugin.
+
+```bash
+# 1. Clone the repository
+git clone https://github.com/guyguy2/zellij_mailbox.git ~/dev/ai-tools/zellij_mailbox
+
+# 2. Run the automated installer
+cd ~/dev/ai-tools/zellij_mailbox
+./scripts/install.sh
+```
+
+**What `install.sh` does:**
+- Grants executable permissions to all hook and helper scripts (`chmod +x`).
+- Symlinks the plugin to `~/.gemini/config/plugins/zellij-orchestrator`.
+- Creates a global `agy-multi` command in `~/.local/bin/agy-multi` (ensure `~/.local/bin` is in your `$PATH`).
+
+#### Method B: Direct Global Clone (One-Liner)
+If you don't need a separate development folder and want to install directly to global plugins:
+
+```bash
+mkdir -p ~/.gemini/config/plugins ~/.local/bin && \
+git clone https://github.com/guyguy2/zellij_mailbox.git ~/.gemini/config/plugins/zellij-orchestrator && \
+chmod +x ~/.gemini/config/plugins/zellij-orchestrator/scripts/*.sh \
+         ~/.gemini/config/plugins/zellij-orchestrator/skills/zellij-orchestrator/scripts/*.sh && \
+ln -sf ~/.gemini/config/plugins/zellij-orchestrator/skills/zellij-orchestrator/scripts/launch.sh ~/.local/bin/agy-multi
+```
+
+---
+
+### 3. Launching in Any Workspace
+
+Once installed, you can launch a 3-agent orchestration session from **any** code repository or directory:
+
+```bash
+# Navigate to any project
+cd ~/path/to/my-project
+
+# Launch multi-agent workspace
+agy-multi
+```
+
+Or pass an initial prompt/objective directly:
+```bash
+agy-multi "Implement user authentication with JWT and write tests"
+```
+
+Or launch directly with Zellij if running locally from this repository:
 ```bash
 zellij --layout layout.kdl
 ```
 
-When started:
-1. **Pane 0 (`Orchestrator`):** Initializes as the Lead Orchestrator, awaiting your high-level goals.
-2. **Pane 2 (`Worker 1`):** Adopts the `dev` specialist role on standby.
-3. **Pane 1 (`Worker 2`):** Adopts the `qa` verification specialist role on standby.
+---
+
+### 4. Updating the Plugin
+
+To update the plugin to the latest version:
+```bash
+cd ~/dev/ai-tools/zellij_mailbox && git pull
+```
+*(Because it is symlinked to `~/.gemini/config/plugins/zellij-orchestrator`, updates are immediately active across all new sessions).*
 
 ---
 
@@ -110,7 +186,8 @@ sequenceDiagram
     O->>W1: 2. Inject command via zellij write-chars
     W1->>W1: 3. Implement code within assigned scope
     W1->>Bus: 4. Write receipt (.agent-bus/results/task_01.json)
-    O->>Bus: 5. Poll & validate receipt
+    Note over W1,Bus: Validated by PostToolUse Hook
+    O->>Bus: 5. Inspect verified receipt
     O->>Bus: 6. Write verification brief (.agent-bus/tasks/task_02.md)
     O->>W2: 7. Inject QA command via zellij write-chars
     W2->>W2: 8. Execute tests & verify edge cases
@@ -120,69 +197,5 @@ sequenceDiagram
 
 ---
 
-## 🎭 Role Catalog
-
-| Role | File | Core Responsibilities | Output Deliverables |
-| :--- | :--- | :--- | :--- |
-| **Universal Base** | [`_BASE.md`](.agent-bus/roles/_BASE.md) | Universal contract, error reporting, isolation guardrails | Standard receipt envelope |
-| **Developer** | [`dev.md`](.agent-bus/roles/dev.md) | Feature implementation, refactoring, bugfixes, builds | Code changes, notes for QA |
-| **QA Specialist** | [`qa.md`](.agent-bus/roles/qa.md) | Test suite execution, boundary tests, regression checks | Test run metrics, issue list |
-| **DevOps / GKE** | [`devops.md`](.agent-bus/roles/devops.md) | Kubernetes manifests, GKE/VPC config, Helm/Kustomize, CI/CD, Workload Identity | Manifests created, validation run, security checks |
-| **Code Reviewer** | [`reviewer.md`](.agent-bus/roles/reviewer.md) | Diff inspection, OWASP security audit, complexity analysis | Review findings, score, approval |
-| **Documentation** | [`docs.md`](.agent-bus/roles/docs.md) | API references, docstrings, user guides, README updates | Docs created, updated endpoints |
-
----
-
-## 🧾 JSON Receipt Contract
-
-Every worker outputs a standardized completion receipt to `.agent-bus/results/<task_id>.json`:
-
-```json
-{
-  "taskId": "task_01_feature_login",
-  "role": "dev",
-  "workerPaneId": "2",
-  "timestamp": "2026-08-15T14:30:00Z",
-  "status": "COMPLETED",
-  "summary": "Implemented JWT authentication service with refresh token rotation.",
-  "filesCreated": ["src/auth/jwt.py"],
-  "filesModified": ["src/auth/service.py"],
-  "errorsOrWarnings": [],
-  "payload": {
-    "notesForQA": "Verify token expiration edge case and invalid bearer header.",
-    "dependenciesAdded": ["pyjwt>=2.8.0"],
-    "breakingChanges": [],
-    "verificationCommandRun": "pytest tests/unit/test_jwt.py"
-  }
-}
-```
-
----
-
-## 🛠️ Orchestrator Command Cheatsheet
-
-### Dispatch Task to Worker
-```bash
-zellij action rename-pane --pane-id <PANE_ID> "Worker <N> (<role>)" && \
-zellij action write-chars --pane-id <PANE_ID> "Adopt role defined in .agent-bus/roles/<role>.md. Execute instructions in .agent-bus/tasks/<task_id>.md and write summary to .agent-bus/results/<task_id>.json" && \
-zellij action send-keys --pane-id <PANE_ID> "Enter"
-```
-
-### Inspect Worker Telemetry
-```bash
-zellij action dump-screen -p <PANE_ID>
-```
-
----
-
-## 🔮 Future Enhancements
-
-- **Global vs. Project Agent Bus:** Hybrid model supporting global role catalogs (`~/.agent-bus/roles/`) with repository-level task overrides.
-- **Antigravity Skill Packaging (`zellij-orchestrator`):** Packaging layout and scripts into a portable `agy-multi` skill launcher.
-- **Dynamic Worker Scaling:** Autonomously spawn new Zellij worker panes on high-volume pipelines.
-
----
-
 ## 📄 License
-
 MIT License.
