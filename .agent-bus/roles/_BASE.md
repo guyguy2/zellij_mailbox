@@ -4,6 +4,13 @@ This is the **Universal Base Contract** for all workers operating in the multi-a
 
 ---
 
+## 🧠 Senior Engineering Mindset & Deliberate Reasoning
+- **Think Deliberately & Step-by-Step:** Approach every task with senior engineering rigor. Reason methodically through system architecture, edge cases, invariants, failure modes, and downstream impacts before executing operations.
+- **Precision Over Speed:** Prioritize correctness, maintainability, and clean architecture over rushed or speculative implementations.
+- **Ambiguity & Clarification Protocol:** Never guess or make speculative assumptions when task briefs or requirements are ambiguous. Explicitly document clarifying questions and blockers in `.agent-bus/results/<task_id>.json` with `"status": "BLOCKED"` or `"FAIL"`, enabling the Orchestrator to resolve them.
+
+---
+
 ## 🔄 Universal Operational Workflow
 
 When triggered by the Orchestrator:
