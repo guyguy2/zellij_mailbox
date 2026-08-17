@@ -49,3 +49,6 @@ tasks/*
 results/*
 !results/.gitkeep
 hooks.log
+
+# Project Documentation & Working Blueprints
+phases/
