@@ -39,4 +39,13 @@ _logs/
 *_logs
 
 # Agent Bus Runtime State
-.agent-bus/
+.agent-bus/tasks/*
+!.agent-bus/tasks/.gitkeep
+.agent-bus/results/*
+!.agent-bus/results/.gitkeep
+.agent-bus/hooks.log
+tasks/*
+!tasks/.gitkeep
+results/*
+!results/.gitkeep
+hooks.log
