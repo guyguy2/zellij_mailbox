@@ -16,6 +16,27 @@ Thumbs.db
 
 # Logs & Temporary files
 *.log
+*.log.*
+*.logs
+*.log.json
+*.log.txt
+*.out
+*.stdout
+*.stderr
+*.err
+*.logcat
+*.stackdump
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+logs/
+*.logs/
+_logs/
+.logs/
+*_log
+*_logs
 
 # Agent Bus Runtime State
 .agent-bus/

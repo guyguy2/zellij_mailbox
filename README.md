@@ -80,7 +80,8 @@ A robust, portable multi-agent orchestration plugin for terminal multiplexers ([
 │   ├── guardrails.sh                 # PreToolUse safety gate
 │   ├── validate_receipt.sh           # PostToolUse receipt validator
 │   ├── bus_status.sh                 # PreInvocation status injector
-│   └── check_pending_receipt.sh      # Stop hook receipt gate
+│   ├── check_pending_receipt.sh      # Stop hook receipt gate
+│   └── clean_logs.sh                 # Log and bus cleanup utility
 └── layout.kdl                        # Local Zellij layout configuration
 ```
 
